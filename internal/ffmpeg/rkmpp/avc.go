@@ -6,8 +6,8 @@ import (
 	"github.com/photoprism/photoprism/internal/ffmpeg/encode"
 )
 
-// TranscodeToAvcRkmppCmd returns the FFmpeg command for hardware-accelerated transcoding to MPEG-4 AVC using Rockchip MPP.
-func TranscodeToAvcRkmppCmd(srcName, destName string, opt encode.Options) *exec.Cmd {
+// TranscodeToAvcCmd returns the FFmpeg command for hardware-accelerated transcoding to MPEG-4 AVC using Rockchip MPP.
+func TranscodeToAvcCmd(srcName, destName string, opt encode.Options) *exec.Cmd {
 	// Use Rockchip MPP hardware acceleration and encoder
 	return exec.Command(
 		opt.Bin,
