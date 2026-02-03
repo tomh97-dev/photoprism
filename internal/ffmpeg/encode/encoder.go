@@ -20,6 +20,7 @@ const (
 	VaapiAvc    Encoder = "h264_vaapi"        // VaapiAvc is the Video Acceleration API H.264 encoder.
 	NvidiaAvc   Encoder = "h264_nvenc"        // NvidiaAvc is the NVIDIA H.264 encoder.
 	V4LAvc      Encoder = "h264_v4l2m2m"      // V4LAvc is the Video4Linux H.264 encoder.
+	RKMPP      	Encoder = "h264_rkmpp"        // RKMPP is the Rockchip MPP (Media Process Platform) encoder.
 )
 
 // AvcEncoders is the list of supported H.264 encoders with aliases.
@@ -51,6 +52,9 @@ var AvcEncoders = map[string]Encoder{
 	"raspberry":         V4LAvc,
 	"raspberrypi":       V4LAvc,
 	string(V4LAvc):      V4LAvc,
+	"rockchip":          RKMPP,
+	"rkmpp":             RKMPP,
+	string(RKMPP):       RKMPP,
 }
 
 // FindEncoder finds an FFmpeg encoder by name.

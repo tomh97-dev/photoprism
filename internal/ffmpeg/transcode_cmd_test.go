@@ -195,6 +195,44 @@ func TestTranscodeCmd(t *testing.T) {
 
 		assert.Contains(t, r.String(), "ffmpeg -hide_banner -y -strict -2 -i VID123.mov -c:v h264_v4l2m2m -map 0:v:0 -map 0:a:0? -ignore_unknown -c:a aac -vf scale='if(gte(iw,ih), min(1500, iw), -2):if(gte(iw,ih), -2, min(1500, ih))',format=yuv420p -num_output_buffers 72 -num_capture_buffers 64 -max_muxing_queue_size 1024 -f mp4 -movflags use_metadata_tags+faststart -map_metadata 0 VID123.mov.avc")
 	})
+	t.Run("Rkmpp", func(t *testing.T) {
+		opt := encode.NewVideoOptions(
+			ffmpegBin,
+			encode.RKMPP,
+			1500,
+			encode.DefaultQuality,
+			encode.PresetFast,
+			"/dev/mpp_service", // device
+			"",                 // map video (default used by encode.Options)
+			"",                 // map audio
+		)
+
+		srcName := fs.Abs("./testdata/25fps.vp9")
+		destName := fs.Abs("./testdata/25fps.rkmpp.avc")
+
+		cmd, _, err := TranscodeCmd(srcName, destName, opt)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		cmdStr := cmd.String()
+		cmdStr = strings.Replace(cmdStr, srcName, "SRC", 1)
+		cmdStr = strings.Replace(cmdStr, destName, "DEST", 1)
+
+		// Update the expected string to match your final RKMPP command builder.
+		// (Below assumes: -i, -map, -ignore_unknown, -c:a aac, -vf ..., -c:v h264_rkmpp, -f mp4, movflags, map_metadata)
+		assert.Equal(
+			t,
+			"/usr/bin/ffmpeg -hide_banner -y -strict -2 -i SRC -c:v h264_rkmpp -map 0:v:0 -map 0:a:0? -ignore_unknown -c:a aac -vf scale='if(gte(iw,ih), min(1500, iw), -2):if(gte(iw,ih), -2, min(1500, ih))',format=yuv420p -b:v 1500k -f mp4 -movflags use_metadata_tags+faststart -map_metadata 0 DEST",
+			cmdStr,
+		)
+
+		// Only run when explicitly enabled on a Rockchip host with /dev/mpp_service passed through.
+		if os.Getenv("PHOTOPRISM_FFMPEG_ENCODER") == "rkmpp" {
+			RunCommandTest(t, encode.RKMPP, srcName, destName, cmd, true)
+		}
+	})
+
 }
 
 // Negative: missing ffmpeg binary should cause execution error.
