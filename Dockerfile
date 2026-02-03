@@ -1,8 +1,5 @@
-# Ubuntu 25.10 (Questing Quokka)
-FROM photoprism/develop:260130-questing
-
-# Harden npm usage by default (applies to npm ci / install in dev container)
-ENV NPM_CONFIG_IGNORE_SCRIPTS=true
+# Ubuntu 24.10 (Oracular Oriole)
+FROM photoprism/develop:250221-oracular
 
 ## Alternative Environments:
 # FROM photoprism/develop:plucky   # Ubuntu 25.04 (Plucky Puffin)
@@ -13,7 +10,7 @@ ENV NPM_CONFIG_IGNORE_SCRIPTS=true
 # FROM photoprism/develop:lunar    # Ubuntu 23.04 (Lunar Lobster)
 # FROM photoprism/develop:jammy    # Ubuntu 22.04 LTS (Jammy Jellyfish)
 # FROM photoprism/develop:impish   # Ubuntu 21.10 (Impish Indri)
-# FROM photoprism/develop:bookworm # Debian 12 (Bookworm)
+# FROM photoprism/develop:bookworm 
 # FROM photoprism/develop:bullseye # Debian 11 (Bullseye)
 # FROM photoprism/develop:buster   # Debian 10 (Buster)
 
